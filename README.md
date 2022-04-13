@@ -39,3 +39,7 @@ quasar build
 ```bash
 quasar build -m pwa
 ```
+
+### Application builds location
+`/dist/pwa`  
+`/dist/spa`
