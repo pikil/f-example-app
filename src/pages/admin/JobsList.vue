@@ -41,7 +41,7 @@
           </q-item-label>
         </q-item-section>
       </q-item>
-      <job-row v-for="job in jobs" :key="job.id" :job="job" />
+      <job-row v-for="job in jobs" :key="job.id" :job="job" @details="showJobDetails" />
     </q-list>
     <template #loading>
       <div class="row justify-center">
@@ -49,6 +49,9 @@
       </div>
     </template>
   </q-infinite-scroll>
+  <q-dialog :model-value="jobSelected" position="right" @hide="unsetSelectedJob">
+    <job-details :job="selectedJob" />
+  </q-dialog>
 </template>
 <script>
 import {
@@ -66,15 +69,18 @@ import Job from 'src/models/Job'
 import JobClient from 'src/models/JobClient'
 import JobRow from 'src/components/rows/JobRow'
 import { sortOptions } from 'src/data/Inputs'
+import JobDetails from 'src/components/blocks/JobDetails'
 
 export default defineComponent({
   components: {
-    JobRow
+    JobRow,
+    JobDetails
   },
   setup () {
     const newJobDialog = ref(false)
     const systemStore = useSystemStore()
     const lastNewJobId = computed(() => systemStore.lastNewJobId)
+    const selectedJob = ref(null)
 
     const allLoaded = ref(false)
     const jobs = ref([])
@@ -107,6 +113,9 @@ export default defineComponent({
       filter,
       sort,
       loader,
+      selectedJob,
+
+      jobSelected: computed(() => !!selectedJob.value),
 
       showJobDialog: () => {
         systemStore.setJobAdder(true)
@@ -180,6 +189,12 @@ export default defineComponent({
 
             done()
           })
+      },
+      showJobDetails: (job) => {
+        selectedJob.value = job
+      },
+      unsetSelectedJob: () => {
+        selectedJob.value = null
       }
     }
   }
