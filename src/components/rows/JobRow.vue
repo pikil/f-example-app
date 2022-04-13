@@ -2,6 +2,9 @@
   <q-item>
     <q-item-section side top style="padding-top: 2px">
       <q-item-label>Job #{{job.id}}</q-item-label>
+      <q-item-label v-if="job.id === lastNewJobId">
+        <q-badge color="red">New</q-badge>
+      </q-item-label>
     </q-item-section>
     <q-item-section>
       <q-item-label>Client: {{clientName}}</q-item-label>
@@ -17,6 +20,7 @@ import { defineComponent, computed } from 'vue'
 import Job from 'src/models/Job'
 import { fasEnvelope, fasPhone } from '@quasar/extras/fontawesome-v6'
 import JobStatusSelect from 'components/inputs/JobStatusSelect'
+import { useSystemStore } from 'src/stores/system-store'
 
 export default defineComponent({
   components: { JobStatusSelect },
@@ -27,10 +31,13 @@ export default defineComponent({
     }
   },
   setup (props) {
+    const systemStore = useSystemStore()
+
     return {
       fasPhone,
       fasEnvelope,
 
+      lastNewJobId: computed(() => systemStore.lastNewJobId),
       status: computed({
         get: () => props.job.status,
         set: (value) => {
