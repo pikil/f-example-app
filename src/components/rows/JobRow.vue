@@ -1,16 +1,26 @@
 <template>
-  <q-item>
-    <q-item-section side top style="padding-top: 2px">
+  <q-item :class="bgClass">
+    <q-item-section side top>
       <q-item-label>Job #{{job.id}}</q-item-label>
       <q-item-label v-if="job.id === lastNewJobId">
         <q-badge color="red">New</q-badge>
       </q-item-label>
     </q-item-section>
     <q-item-section>
-      <q-item-label>Client: {{clientName}}</q-item-label>
-      <q-item-label caption class="text-faded"><q-icon :name="fasPhone" />&nbsp;{{job.client.phone}}&ensp;&ensp;<q-icon :name="fasEnvelope" />&nbsp;{{job.client.email}}</q-item-label>
+      <q-item-label>
+        <strong>{{clientName}}</strong>
+      </q-item-label>
+      <q-item-label caption class="text-faded q-py-xs">
+        <q-icon :name="fasClock" />&nbsp;<em>{{jobTime}}</em>&ensp;&ensp;
+      </q-item-label>
+      <q-item-label caption class="text-faded q-py-xs">
+        <q-icon :name="fasPhone" />&nbsp;{{job.client.phone}}
+      </q-item-label>
+      <q-item-label caption class="text-faded q-py-xs">
+        <q-icon :name="fasEnvelope" />&nbsp;{{job.client.email}}
+      </q-item-label>
     </q-item-section>
-    <q-item-section side>
+    <q-item-section side top>
       <job-status-select v-model="status" />
     </q-item-section>
   </q-item>
@@ -18,9 +28,12 @@
 <script>
 import { defineComponent, computed } from 'vue'
 import Job from 'src/models/Job'
-import { fasEnvelope, fasPhone } from '@quasar/extras/fontawesome-v6'
+import { fasClock, fasEnvelope, fasPhone } from '@quasar/extras/fontawesome-v6'
 import JobStatusSelect from 'components/inputs/JobStatusSelect'
 import { useSystemStore } from 'src/stores/system-store'
+import { date } from 'quasar'
+
+const { formatDate } = date
 
 export default defineComponent({
   components: { JobStatusSelect },
@@ -36,7 +49,9 @@ export default defineComponent({
     return {
       fasPhone,
       fasEnvelope,
+      fasClock,
 
+      jobTime: formatDate(new Date(props.job.timeCreated), 'YYYY-MM-DD HH:mm'),
       lastNewJobId: computed(() => systemStore.lastNewJobId),
       status: computed({
         get: () => props.job.status,
@@ -52,6 +67,22 @@ export default defineComponent({
           name += ' ' + props.job.client.lName
 
         return name
+      }),
+      bgClass: computed(() => {
+        let classes = 'bg-'
+
+        switch (props.job.status) {
+          case 1: classes += 'light-blue-1'; break
+          case 2: classes += 'purple-1'; break
+          case 3: classes += 'yellow-2'; break
+          case 4: classes += 'green-2'; break
+          case 0:
+          default:
+            classes += 'grey-2'
+            break
+        }
+
+        return classes
       })
     }
   }

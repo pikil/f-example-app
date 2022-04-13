@@ -13,7 +13,7 @@
     </div>
   </div>
   <q-infinite-scroll ref="loader" :disable="allLoaded" @load="loadJobs">
-    <q-list class="border-radius-10 q-pb-sm q-mt-lg" bordered>
+    <q-list class="border-radius-10 q-mt-lg overflow-hidden" bordered separator>
       <q-item class="q-pb-lg">
         <q-item-section>
           <q-item-label>

@@ -48,7 +48,7 @@ export default class Job {
   async save () {
     const obj = {
       id: null,
-      clientFName: this.client.lName,
+      clientFName: this.client.fName,
       clientLName: this.client.lName,
       clientPhone: this.client.phone,
       clientEmail: this.client.email,
