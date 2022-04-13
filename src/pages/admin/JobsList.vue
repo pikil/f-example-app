@@ -21,7 +21,7 @@
               <div class="col-auto">
                 <q-input
                   v-model="filter"
-                  class="w-100"
+                  class="w-150"
                   label="Filter"
                   dense
                   debounce="800"
@@ -30,7 +30,7 @@
               <div class="col-auto">
                 <q-select
                   v-model="sort"
-                  class="w-100"
+                  class="w-150"
                   label="Sort"
                   :dropdown-icon="fasAngleDown"
                   dense
@@ -51,7 +51,12 @@
   </q-infinite-scroll>
 </template>
 <script>
-import { defineComponent, ref, watch } from 'vue'
+import {
+  defineComponent,
+  ref,
+  computed,
+  watch
+} from 'vue'
 import { fasAngleDown, fasPlus } from '@quasar/extras/fontawesome-v6'
 import { useSystemStore } from 'src/stores/system-store'
 import { DB } from 'src/data/DB'
@@ -59,25 +64,7 @@ import { JobListPageSize } from 'src/data/JobConstants'
 import Job from 'src/models/Job'
 import JobClient from 'src/models/JobClient'
 import JobRow from 'src/components/rows/JobRow'
-
-const sortOptions = [
-  {
-    label: 'Newest first',
-    value: 0
-  },
-  {
-    label: 'Oldest first',
-    value: 1
-  },
-  {
-    label: 'Scheduled first',
-    value: 2
-  },
-  {
-    label: 'Completed first',
-    value: 3
-  }
-]
+import { sortOptions } from 'src/data/Inputs'
 
 export default defineComponent({
   components: {
@@ -124,12 +111,45 @@ export default defineComponent({
       },
 
       loadJobs: (page, done) => {
-        DB.jobs
-          .orderBy('timeCreated').reverse()
-          .limit(JobListPageSize)
+        let query = DB.jobs
+
+        switch (sort.value.value) {
+          case 1: query = query.orderBy('id'); break
+          case 2: query = query.orderBy('status'); break
+          case 3: query = query.orderBy('status').reverse(); break
+          case 0:
+          default:
+            query = query.orderBy('id').reverse(); break
+        }
+
+        if (filter.value !== '') {
+          const loweredFilter = filter.value.toLowerCase()
+
+          query = query.filter(({
+            clientFName,
+            clientLName,
+            clientEmail,
+            clientPhone
+          }) => {
+            switch (true) {
+              case clientFName.toLowerCase().includes(loweredFilter):
+              case clientLName.toLowerCase().includes(loweredFilter):
+              case clientEmail.toLowerCase().includes(loweredFilter):
+              case clientPhone.toLowerCase().includes(loweredFilter):
+                return true
+
+              default:
+                return false
+            }
+          })
+        }
+
+        query
           .offset((page - 1) * JobListPageSize)
+          .limit(JobListPageSize)
           .toArray()
           .then((dbJobs) => {
+            console.log('dbJobs.length', dbJobs.length, page, (page - 1) * JobListPageSize)
             if (dbJobs.length < JobListPageSize)
               allLoaded.value = true
 
