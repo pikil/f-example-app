@@ -55,7 +55,8 @@ import {
   defineComponent,
   ref,
   computed,
-  watch
+  watch,
+  nextTick
 } from 'vue'
 import { fasAngleDown, fasPlus } from '@quasar/extras/fontawesome-v6'
 import { useSystemStore } from 'src/stores/system-store'
@@ -85,9 +86,10 @@ export default defineComponent({
     const resetLoader = () => {
       jobs.value = []
       loader.value.reset()
-      loader.value.resume()
-      loader.value.trigger()
-      allLoaded.value = false
+
+      nextTick().then(() => {
+        allLoaded.value = false
+      })
     }
 
     watch(filter, resetLoader)
@@ -149,7 +151,6 @@ export default defineComponent({
           .limit(JobListPageSize)
           .toArray()
           .then((dbJobs) => {
-            console.log('dbJobs.length', dbJobs.length, page, (page - 1) * JobListPageSize)
             if (dbJobs.length < JobListPageSize)
               allLoaded.value = true
 
