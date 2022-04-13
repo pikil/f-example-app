@@ -59,7 +59,7 @@ export default class Job {
 
     const id = parseInt(this.id)
 
-    if (Number.isNaN(id) && id > 0) {
+    if (!Number.isNaN(id) && id > 0) {
       obj.id = id
     } else {
       delete obj.id

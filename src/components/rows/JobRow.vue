@@ -33,7 +33,7 @@ export default defineComponent({
 
       status: computed({
         get: () => props.job.status,
-        set: ({ value }) => {
+        set: (value) => {
           props.job.setStatus(value)
         }
       }),
