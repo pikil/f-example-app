@@ -1,5 +1,5 @@
 <template>
-  <q-item :class="bgClass">
+  <q-item>
     <q-item-section side top style="padding-top: 6px">
       <q-item-label>Job #{{job.id}}</q-item-label>
       <q-item-label v-if="job.id === lastNewJobId">
@@ -36,7 +36,7 @@
       </q-item-label>
     </q-item-section>
     <q-item-section side top>
-      <job-status-select v-model="status" />
+      <job-status-select v-model="status" :class="selectClasses" />
     </q-item-section>
   </q-item>
 </template>
@@ -90,8 +90,8 @@ export default defineComponent({
 
         return name
       }),
-      bgClass: computed(() => {
-        let classes = 'bg-'
+      selectClasses: computed(() => {
+        let classes = 'rounded-borders bg-'
 
         switch (props.job.status) {
           case 1: classes += 'light-blue-1'; break
