@@ -16,7 +16,11 @@ npm install
 npm i -g @quasar/cli
 ```
 
-### Start the app in development mode (hot-code reloading, error reporting, etc.)
+### Start the app in development mode for SPA or PWA (hot-code reloading, error reporting, etc.)
+```bash
+quasar d
+```
+or
 ```bash
 quasar d -m pwa
 ```
@@ -26,7 +30,12 @@ quasar d -m pwa
 npm run lint
 ```
 
-### Build the app for production
+### Build the app for production for SPA
 ```bash
 quasar build
+```
+
+### Build the app for production for PWA
+```bash
+quasar build -m pwa
 ```
