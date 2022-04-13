@@ -15,7 +15,7 @@ export default defineComponent({
     return {
       phoneRules: [
         val => (typeof val === 'string' && val.length >= minLen) || 'Phone number must be at least ' + minLen + ' characters', // Simple check for now
-        val => /[\d+]+/.test(val) || 'Phone number must contain only digits and +'
+        val => /^[0-9+]+$/.test(val) || 'Phone number must contain only digits and +'
       ]
     }
   }
