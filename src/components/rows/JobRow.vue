@@ -22,7 +22,9 @@
               @click="showDetails"
             />
           </div>
-          <div v-if="job.notes.length" class="col-auto text-bold text-amber-10">{{job.notes.length}} note(s)</div>
+          <div v-if="job.notes.length" class="col-auto text-bold text-amber-10">
+            <em>{{notesLengthLabel}}</em>
+          </div>
         </div>
       </q-item-label>
       <q-item-label caption class="text-faded q-py-xs">
@@ -82,6 +84,17 @@ export default defineComponent({
         }
       }),
 
+      notesLengthLabel: computed(() => {
+        if (!props.job.notes.length)
+          return ''
+
+        let label = props.job.notes.length + ' job note'
+
+        if (props.job.notes.length > 1)
+          label += 's'
+
+        return label
+      }),
       clientName: computed(() => {
         let name = props.job.client.fName
 
