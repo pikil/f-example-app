@@ -86,13 +86,14 @@ export default defineComponent({
   setup () {
     const newJobDialog = ref(false)
     const systemStore = useSystemStore()
+    const lastNewJobId = computed(() => systemStore.lastNewJobId)
 
     const allLoaded = ref(false)
     const jobs = ref([])
     const loader = ref(null)
 
     const filter = ref('')
-    const sort = ref(null)
+    const sort = ref(sortOptions[0])
 
     const resetLoader = () => {
       jobs.value = []
@@ -104,6 +105,7 @@ export default defineComponent({
 
     watch(filter, resetLoader)
     watch(sort, resetLoader)
+    watch(lastNewJobId, resetLoader)
 
     return {
       fasPlus,

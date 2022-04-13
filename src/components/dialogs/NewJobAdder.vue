@@ -82,6 +82,7 @@ export default defineComponent({
 
             clearJobValues()
             successSnack('Job #' + id + ' is created')
+            systemStore.setLastNewJobId(id)
           }).catch(() => {
             creating.value = false
           })
