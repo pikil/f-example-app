@@ -7,7 +7,7 @@ export default class JobNote {
   get time () { return this._time }
   set time (value) {
     value = parseInt(value)
-    this._time = Number.isNaN(value) && value > 0 ? value : Date.now()
+    this._time = !Number.isNaN(value) && value > 0 ? value : Date.now()
   }
 
   get text () { return this._text }
