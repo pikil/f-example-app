@@ -20,10 +20,11 @@
         <ul>
           <li>VueJS;</li>
           <li>Vue Router (page routing within SPA);</li>
-          <li>Pinia (State management);</li>
+          <li>Pinia (Store management);</li>
           <li>Quasar Framework;</li>
           <li>Dexie (wrapper for IndexedDB);</li>
           <li>FontAwesome (icons set);</li>
+          <li>PWA (Offline mode, desktop mode);</li>
         </ul>
       </q-card-section>
     </q-card>

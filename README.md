@@ -1,15 +1,24 @@
 # Assessment solution
 The solution which allows a tradie to see their jobs.
 
+## Stack
+- VueJS;
+- Vue Router;
+- Dexie (IndexedDB);
+- Pinia (store management)'
+- FontAwesome (icons set);
+- PWA (Offline mode, desktop mode);
+
 
 ## Install the dependencies
 ```bash
 npm install
+npm i -g @quasar/cli
 ```
 
 ### Start the app in development mode (hot-code reloading, error reporting, etc.)
 ```bash
-quasar d
+quasar d -m pwa
 ```
 
 ### Lint the files
@@ -21,6 +30,3 @@ npm run lint
 ```bash
 quasar build
 ```
-
-### Customize the configuration
-See [Configuring quasar.conf.js](https://quasar.dev/quasar-cli/quasar-conf-js).
