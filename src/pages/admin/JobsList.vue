@@ -91,10 +91,12 @@ export default defineComponent({
 
     const resetLoader = () => {
       jobs.value = []
-      loader.value.reset()
+      allLoaded.value = false
 
       nextTick().then(() => {
-        allLoaded.value = false
+        loader.value.stop()
+        loader.value.reset()
+        loader.value.resume()
       })
     }
 
